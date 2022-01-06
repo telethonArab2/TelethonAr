@@ -1,0 +1,49 @@
+URL=""
+
+if [[ $1 =~ ^https?:\/\/mega(\.co)?\.nz ]]; then
+	URL="$1"
+fi
+
+if [[ ! $URL ]]; then
+	echo "Usage: ${0##*/} url" >&2
+	exit 1
+fi
+
+CURL="curl -Y 1 -y 9 -s"
+
+missing=false
+for cmd in openssl; do
+	if [[ ! $(command -v "$cmd" 2>&1) ]]; then
+		missing=true
+		echo "${0##*/}: $cmd: command not found" >&2
+	fi
+done
+if $missing; then
+	exit 1
+fi
+
+id="${URL#*!}"; id="${id%%!*}"
+key="${URL##*!}"
+raw_hex=$(echo "${key}=" | tr '\-_' '+/' | tr -d ',' | base64 -d -i 2>/dev/null | od -v -An -t x1 | tr -d '\n ')
+hex=$(printf "%016x" \
+	$(( 0x${raw_hex:0:16} ^ 0x${raw_hex:32:16} )) \
+	$(( 0x${raw_hex:16:16} ^ 0x${raw_hex:48:16} ))
+)
+
+json=$($CURL --header 'Content-Type: application/json' --data '[{"a":"g", "g":"1", "p":"'"$id"'"}]' 'https://g.api.mega.co.nz/cs?id=&ak=') || exit 1; json="${json#"[{"}"; json="${json%"}]"}"
+file_url="${json##*'"g":'}"; file_url="${file_url%%,*}"; file_url="${file_url//'"'/}"
+
+json=$($CURL --header 'Content-Type: application/json' --data '[{"a":"g", "p":"'"$id"'"}]' 'https://g.api.mega.co.nz/cs?id=&ak=') || exit 1
+at="${json##*'"at":'}"; at="${at%%,*}"; at="${at//'"'/}"
+file_size="${json##*'"s":'}'"; file_size="${file_size%%,*}"; file_size="${file_size//'"'/}"
+
+json=$(echo "${at}==" | tr '\-_' '+/' | tr -d ',' | openssl enc -a -A -d -aes-128-cbc -K "$hex" -iv "00000000000000000000000000000000" -nopad | tr -d '\0'); json="${json#"MEGA{"}"; json="${json%"}"}"
+file_name="${json##*'"n":'}"
+if [[ $file_name == *,* ]]; then
+	file_name="${file_name%%,*}"
+fi
+file_name="${file_name//'"'/}"
+
+# $CURL "$file_url" | openssl enc -d -aes-128-ctr -K "$hex" -iv "${raw_hex:32:16}0000000000000000" > "$file_name"
+
+echo "{\"file_name\" : \"${file_name}\", \"file_size\" : \"$file_size\", \"url\" : \"${file_url}\", \"raw_hex\" : \"${raw_hex:32:16}0000000000000000\", \"hex\" : \"${hex}\"}"

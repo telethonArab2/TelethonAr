@@ -1,7 +1,7 @@
 import re
 import time
 from datetime import datetime
-from userbot import StartTime, safeina1
+from userbot import StartTime, iqthon
 from userbot.Config import Config
 from userbot.plugins import mention
 help1 = ("**☭⦙ كيفيه التنصيب :**")

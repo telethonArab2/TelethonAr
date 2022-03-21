@@ -4,18 +4,18 @@ from .Config import Config
 from .core.logger import logging
 from .core.session import iqthon
 from .sql_helper.globals import addgvar, delgvar, gvarstatus
-__version__ = "7.3"
+__version__ = "7.6"
 __license__ = "GNU Affero General Public License v3.0"
-__author__ = "<t.me/E999G>"
+__author__ = "<t.me/iqthon>"
 __copyright__ = "telethon AR (C) 2020 - 2021  " + __author__
 iqthon.version = __version__
 iqthon.tgbot.version = __version__
 LOGS = logging.getLogger("IQTHON")
 bot = iqthon
 StartTime = time.time()
-catversion = "7.2"
+catversion = "7.6"
 if Config.UPSTREAM_REPO == "Telethon-Ar":
-    UPSTREAM_REPO_URL = "https://github.com/Guevaras1explanations/TelethonArab-"
+    UPSTREAM_REPO_URL = "https://github.com/telethon-Arab/telethonNow"
 else:
     UPSTREAM_REPO_URL = Config.UPSTREAM_REPO
 if Config.PRIVATE_GROUP_BOT_API_ID == 0:

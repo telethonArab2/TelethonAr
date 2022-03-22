@@ -66,7 +66,7 @@ UNBAN_RIGHTS = ChatBannedRights(
 )
 LOGS = logging.getLogger(__name__)
 plugin_category = "utils"
-MUTE = gvarstatus("OR_MUTE") or "(ميوت|كتم)"
+MUTE = gvarstatus("OR_MUTE") or "كتم"
 TFLASH = gvarstatus("OR_TFLASH") or "(طرد الكل|تفليش)"
 UNMUTE = gvarstatus("OR_UNMUTE") or "الغاء كتم"
 addition = gvarstatus("OR_ADD") or "اضافه"

@@ -1556,6 +1556,10 @@ async def iq(SLQ):
         f"*مجموع `{a.total}` الرسائل هنا**"
     )   
 
+def inline_mention(user):
+    full_name = user_full_name(user) or "No Name"
+    return f"[{full_name}](tg://user?id={user.id})"
+
 @iqthon.on(admin_cmd(pattern="تغير صورة( المجموعة| -d)$"))
 async def set_group_photo(event):  # sourcery no-metrics
     "For changing Group dp"
@@ -1644,9 +1648,7 @@ def make_mention(user):
         return inline_mention(user)
 
 
-def inline_mention(user):
-    full_name = user_full_name(user) or "No Name"
-    return f"[{full_name}](tg://user?id={user.id})"
+
 
 
 def user_full_name(user):

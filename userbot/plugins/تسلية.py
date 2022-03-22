@@ -2458,7 +2458,7 @@ async def _(event):
         await event.edit("**لا يمكن العثور على إدخال الفيديو.**")
 @iqthon.on(admin_cmd(pattern="فايروس(?:\s|$)([\s\S]*)"))
 async def permalink(mention):
-    await edit_or_reply(mention, f"https://t.me/rxxrx/17")
+    await edit_or_reply(mention, f"https://t.me/eggee/6")
 @iqthon.on(admin_cmd(pattern="هلو(?: |$)(.*)"))
 async def _(event):
     if event.fwd_from:
@@ -2552,7 +2552,6 @@ async def iq(mention):
     my_first = me.first_name
     my_mention = f"[{me.first_name}](tg://user?id={me.id})"
     await edit_or_reply(mention, f"**🚹 ¦ المستخدم ⪼ • ** [{iqth2}](tg://user?id={user.id}) \n ☑️ **¦  تـم رفـعه سعـلوه 🦎 .** \n**🤵‍♂️ ¦ بواسطه  : ** {my_mention} ")
-
 
 
 

@@ -11,6 +11,9 @@ import shlex
 import math
 import os
 import html
+import io
+import sys
+import traceback
 import cv2
 from asyncio import sleep
 import telethon.password as pwd_mod
@@ -74,18 +77,18 @@ def user_full_name(user):
     names = [i for i in list(names) if i]
     return " ".join(names)
 DEFAULTUSER = str(AUTONAME) if AUTONAME else str(ALIVE_NAME)
-STAT_INDICATION = "**⎈ ⦙   جـاري جـمـع الإحصـائيـات ، انتـظـر 🔄**"
-CHANNELS_STR = "**⎈ ⦙   قائمة القنوات التي أنت فيها موجودة هنا\n\n"
-CHANNELS_ADMINSTR = "**⎈ ⦙  قائمة القنوات التي تديرها هنا **\n\n"
-CHANNELS_OWNERSTR = "**⎈ ⦙  قائمة القنوات التي تمتلك فيها هنا **\n\n"
-GROUPS_STR = "**⎈ ⦙  قائمة المجموعات التي أنت فيها موجود هنا **\n\n"
-GROUPS_ADMINSTR = "**⎈ ⦙  قائمة المجموعات التي تكون مسؤولاً فيها هنا **\n\n"
-GROUPS_OWNERSTR = "**⎈ ⦙  قائمة المجموعات التي تمتلك فيها هنا **\n\n"
-INVALID_MEDIA = "**⎈ ⦙  إمتداد هذه الصورة غير صالح  ❌**"
-PP_CHANGED = "**⎈ ⦙  تم تغير صورة حسابك بنجاح  ✅**"
-PP_TOO_SMOL = "**⎈ ⦙  هذه الصورة صغيرة جدًا قم بإختيار صورة أخرى  ⚠️**"
-PP_ERROR = "**⎈ ⦙  حدث خطأ أثناء معالجة الصورة  ⚠️**"
-BIO_SUCCESS = "**⎈ ⦙  تم تغيير بايو حسابك بنجاح  ✅**"
+STAT_INDICATION = "**☭ ⦙   جـاري جـمـع الإحصـائيـات ، انتـظـر 🔄**"
+CHANNELS_STR = "**☭ ⦙   قائمة القنوات التي أنت فيها موجودة هنا\n\n"
+CHANNELS_ADMINSTR = "**☭ ⦙  قائمة القنوات التي تديرها هنا **\n\n"
+CHANNELS_OWNERSTR = "**☭ ⦙  قائمة القنوات التي تمتلك فيها هنا **\n\n"
+GROUPS_STR = "**☭ ⦙  قائمة المجموعات التي أنت فيها موجود هنا **\n\n"
+GROUPS_ADMINSTR = "**☭ ⦙  قائمة المجموعات التي تكون مسؤولاً فيها هنا **\n\n"
+GROUPS_OWNERSTR = "**☭ ⦙  قائمة المجموعات التي تمتلك فيها هنا **\n\n"
+INVALID_MEDIA = "**☭ ⦙  إمتداد هذه الصورة غير صالح  ❌**"
+PP_CHANGED = "**☭ ⦙  تم تغير صورة حسابك بنجاح  ✅**"
+PP_TOO_SMOL = "**☭ ⦙  هذه الصورة صغيرة جدًا قم بإختيار صورة أخرى  ⚠️**"
+PP_ERROR = "**☭ ⦙  حدث خطأ أثناء معالجة الصورة  ⚠️**"
+BIO_SUCCESS = "**☭ ⦙  تم تغيير بايو حسابك بنجاح  ✅**"
 FONT_FILE_TO_USE = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
 autopic_path = os.path.join(os.getcwd(), "userbot", "original_pic.png")
 digitalpic_path = os.path.join(os.getcwd(), "userbot", "digital_pic.png")
@@ -98,9 +101,9 @@ idee = gvarstatus("OR_ID") or "ايدي"
 OR_NAMEAUTO = gvarstatus("OR_NAMEAUTO") or "اسم وقتي"
 OR_AUTOBIO = gvarstatus("OR_AUTOBIO") or "نبذه وقتيه"
 digitalpfp = gvarstatus("AUTO_PIC") or "https://telegra.ph/file/5068031bf718f735303f7.jpg"
-NAME_OK = "**⎈ ⦙  تم تغيير اسم حسابك بنجاح  ✅**"
-USERNAME_SUCCESS = "**⎈ ⦙  تم تغيير معرّف حسابك بنجاح  ✅**"
-USERNAME_TAKEN = "**⎈ ⦙  هذا المعرّف مستخدم  ❌**"
+NAME_OK = "**☭ ⦙  تم تغيير اسم حسابك بنجاح  ✅**"
+USERNAME_SUCCESS = "**☭ ⦙  تم تغيير معرّف حسابك بنجاح  ✅**"
+USERNAME_TAKEN = "**☭ ⦙  هذا المعرّف مستخدم  ❌**"
 plugin_category = "tools"
 DEFAULTUSERBIO = gvarstatus("DEFAULT_BIO") or "الحمد الله"
 DEFAULTUSER = AUTONAME or Config.ALIVE_NAME
@@ -162,18 +165,18 @@ async def stats(event):
     stop_time = time.time() - start_time
     full_name = inline_mention(await event.client.get_me())
     response = f"📌 **• ⚜️ |  احصائيات حسـابك العـامة لـ {full_name} 📊** \n"
-    response += f"**⎈ ⦙  الدردشات الخاصة 🏷️  :** {private_chats} \n"
-    response += f"**⎈ ⦙   الاشـخاص 🚹 : {private_chats - bots}` \n"
-    response += f"**⎈ ⦙   الـبوتـات 🤖 : {bots}` **\n"
-    response += f"**⎈ ⦙   عـدد المجـموعـات 🚻 :** `{groups}` \n"
-    response += f"**⎈ ⦙   عـدد القنـوات  🚻 :** `{broadcast_channels}` \n"
-    response += f"**⎈ ⦙   عـدد المجـموعات التـي تكـون فيها ادمـن  🛂 :** `{admin_in_groups}` \n"
-    response += f"**⎈ ⦙   عـدد المجموعات التـي أنـشأتـها  🛃** : `{creator_in_groups}` \n"
-    response += f"**⎈ ⦙   عـدد القنوات التـي تكـون فيها ادمـن 📶 : `{admin_in_broadcast_channels}` **\n"
-    response += f"**⎈ ⦙   حقوق المسؤول في القنوات  🛂 : `{admin_in_broadcast_channels - creator_in_channels}` **\n"
+    response += f"**☭ ⦙  الدردشات الخاصة 🏷️  :** {private_chats} \n"
+    response += f"**☭ ⦙   الاشـخاص 🚹 : {private_chats - bots}` \n"
+    response += f"**☭ ⦙   الـبوتـات 🤖 : {bots}` **\n"
+    response += f"**☭ ⦙   عـدد المجـموعـات 🚻 :** `{groups}` \n"
+    response += f"**☭ ⦙   عـدد القنـوات  🚻 :** `{broadcast_channels}` \n"
+    response += f"**☭ ⦙   عـدد المجـموعات التـي تكـون فيها ادمـن  🛂 :** `{admin_in_groups}` \n"
+    response += f"**☭ ⦙   عـدد المجموعات التـي أنـشأتـها  🛃** : `{creator_in_groups}` \n"
+    response += f"**☭ ⦙   عـدد القنوات التـي تكـون فيها ادمـن 📶 : `{admin_in_broadcast_channels}` **\n"
+    response += f"**☭ ⦙   حقوق المسؤول في القنوات  🛂 : `{admin_in_broadcast_channels - creator_in_channels}` **\n"
     response += f"**عـدد المحـادثـات الغيـر مقـروء 📄 :** {unread} \n"
     response += f"**عـدد الـتاكـات الغيـر مقـروء 📌 :** {unread_mentions} \n"
-    response += f"**⎈ ⦙   استغرق الأمر  🔍  :** `{stop_time:.02f}` ثانيه \n"
+    response += f"**☭ ⦙   استغرق الأمر  🔍  :** `{stop_time:.02f}` ثانيه \n"
     await cat.edit(response)
 @iqthon.on(admin_cmd(outgoing=True, pattern="ص1$"))
 async def iqvois(vois):
@@ -998,31 +1001,31 @@ async def _(event):
             return await edit_delete(event, f"`{str(e)}`", 5)
         try:
             if p.first_name:
-                return await edit_or_reply(                    event, f"**⎈ ⦙   آيـدي المُستخدم 💠 :** `{input_str}` هـو `{p.id}`"                )
+                return await edit_or_reply(                    event, f"**☭ ⦙   آيـدي المُستخدم 💠 :** `{input_str}` هـو `{p.id}`"                )
         except Exception:
             try:
                 if p.title:
-                    return await edit_or_reply(                        event, f"**⎈ ⦙   آيـدي الدردشــــة 💠 :** `{p.title}` هـو `{p.id}` "                    )
+                    return await edit_or_reply(                        event, f"**☭ ⦙   آيـدي الدردشــــة 💠 :** `{p.title}` هـو `{p.id}` "                    )
             except Exception as e:
                 LOGS.info(str(e))
-        await edit_or_reply(event, "**⎈ ⦙   قُم بإدخال أسم مُستخدم أو الرد على المُستخدم ⚜️**")
+        await edit_or_reply(event, "**☭ ⦙   قُم بإدخال أسم مُستخدم أو الرد على المُستخدم ⚜️**")
     elif event.reply_to_msg_id:
         await event.get_input_chat()
         r_msg = await event.get_reply_message()
         if r_msg.media:
             bot_api_file_id = pack_bot_file_id(r_msg.media)
-            await edit_or_reply(                event,                f"**⎈ ⦙   آيـدي الدردشــــة  💠 : **`{str(event.chat_id)}` \n**⎈ ⦙   آيـدي المُستخدم  💠 : **`{str(r_msg.sender_id)}` \n**⎈ ⦙  آيـدي الميديـا  🆔 : **`{bot_api_file_id}`"            )
+            await edit_or_reply(                event,                f"**☭ ⦙   آيـدي الدردشــــة  💠 : **`{str(event.chat_id)}` \n**☭ ⦙   آيـدي المُستخدم  💠 : **`{str(r_msg.sender_id)}` \n**☭ ⦙  آيـدي الميديـا  🆔 : **`{bot_api_file_id}`"            )
         else:
-            await edit_or_reply(                event,                f"**⎈ ⦙   آيـدي الدردشــــة  💠 : **`{str(event.chat_id)}` 𖥻\n**⎈ ⦙   آيـدي المُستخدم  💠 : **`{str(r_msg.sender_id)}` "            )
+            await edit_or_reply(                event,                f"**☭ ⦙   آيـدي الدردشــــة  💠 : **`{str(event.chat_id)}` 𖥻\n**☭ ⦙   آيـدي المُستخدم  💠 : **`{str(r_msg.sender_id)}` "            )
 
 @iqthon.on(admin_cmd(pattern="وضع بايو(?: |$)(.*)"))
 async def _(event):
     bio = event.pattern_match.group(1)
     try:
         await event.client(functions.account.UpdateProfileRequest(about=bio))
-        await edit_delete(event, "**⎈ ⦙  تم تغيير البايو بنجاح  ✅**")
+        await edit_delete(event, "**☭ ⦙  تم تغيير البايو بنجاح  ✅**")
     except Exception as e:
-        await edit_or_reply(event, f"**⎈ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
+        await edit_or_reply(event, f"**☭ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
 @iqthon.on(admin_cmd(pattern="وضع اسم(?: |$)(.*)"))
 async def _(event):
     names = event.pattern_match.group(1)
@@ -1033,9 +1036,9 @@ async def _(event):
     try:
         await event.client(
             functions.account.UpdateProfileRequest(                first_name=first_name, last_name=last_name            )        )
-        await edit_delete(event, "**⎈ ⦙  تم تغيير الاسم بنجاح  ✅**")
+        await edit_delete(event, "**☭ ⦙  تم تغيير الاسم بنجاح  ✅**")
     except Exception as e:
-        await edit_or_reply(event, f"**⎈ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
+        await edit_or_reply(event, f"**☭ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
 @iqthon.on(admin_cmd(pattern="وضع صوره(?: |$)(.*)"))
 async def _(event):
     reply_message = await event.get_reply_message()
@@ -1049,12 +1052,12 @@ async def _(event):
         await catevent.edit(str(e))
     else:
         if photo:
-            await catevent.edit("**⎈ ⦙   أشترك @IQTHON **")
+            await catevent.edit("**☭ ⦙   أشترك @IQTHON **")
             if photo.endswith((".mp4", ".MP4")):
                 # https://t.me/tgbetachat/324694
                 size = os.stat(photo).st_size
                 if size > 2097152:
-                    await catevent.edit("**⎈ ⦙   يجب ان يكون الحجم اقل من 2 ميغا ✅**")
+                    await catevent.edit("**☭ ⦙   يجب ان يكون الحجم اقل من 2 ميغا ✅**")
                     os.remove(photo)
                     return
                 catpic = None
@@ -1066,9 +1069,9 @@ async def _(event):
                 await event.client(
                     functions.photos.UploadProfilePhotoRequest(                        file=catpic, video=catvideo, video_start_ts=0.01                   )                )
             except Exception as e:
-                await catevent.edit(f"**⎈ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
+                await catevent.edit(f"**☭ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
             else:
-                await edit_or_reply(                    catevent, "**⎈ ⦙   تم تغيير الصورة بنجاح ✅**"                )
+                await edit_or_reply(                    catevent, "**☭ ⦙   تم تغيير الصورة بنجاح ✅**"                )
     try:
         os.remove(photo)
     except Exception as e:
@@ -1111,7 +1114,7 @@ async def update_username(username):
     except UsernameOccupiedError:
         await edit_or_reply(event, USERNAME_TAKEN)
     except Exception as e:
-        await edit_or_reply(event, f"**⎈ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
+        await edit_or_reply(event, f"**☭ ⦙  خطأ  ⚠️ :**\n`{str(e)}`")
 @iqthon.on(admin_cmd(pattern=r"شوت ?(.*)", outgoing=True))
 async def shout(args):
     if args.fwd_from:
@@ -1168,8 +1171,8 @@ if 1 == 1:
 @iqthon.on(admin_cmd(pattern="معرفاتي(?: |$)(.*)"))
 async def _(event):
     result = await event.client(GetAdminedPublicChannelsRequest())
-    output_str = "**⎈ ⦙  جميع القنوات والمجموعات التي قمت بإنشائها  💠  :**\n"
-    output_str += "".join(f"⎈ ⦙    - {channel_obj.title} @{channel_obj.username} \n"
+    output_str = "**☭ ⦙  جميع القنوات والمجموعات التي قمت بإنشائها  💠  :**\n"
+    output_str += "".join(f"☭ ⦙    - {channel_obj.title} @{channel_obj.username} \n"
         for channel_obj in result.chats)
     await edit_or_reply(event, output_str)
 @iqthon.on(admin_cmd(pattern="ملكيه ([\s\S]*)"))
@@ -1181,9 +1184,9 @@ async def _(event):
         await event.client(
             functions.channels.EditCreatorRequest(                channel=event.chat_id, user_id=user_name, password=my_srp_password            )        )
     except Exception as e:
-        await event.edit(f"**⎈ ⦙  حـدث خـطأ ✕ :**\n`{str(e)}`")
+        await event.edit(f"**☭ ⦙  حـدث خـطأ ✕ :**\n`{str(e)}`")
     else:
-        await event.edit("**⎈ ⦙  تم نقل ملكيه ✓**")
+        await event.edit("**☭ ⦙  تم نقل ملكيه ✓**")
 @iqthon.on(admin_cmd(pattern=f"{plagiarism}(?: |$)(.*)"))
 async def _(event):
     replied_user, error_i_a = await get_user_from_event(event)
@@ -1209,9 +1212,9 @@ async def _(event):
     await event.client(functions.account.UpdateProfileRequest(about=user_bio))
     pfile = await event.client.upload_file(profile_pic)
     await event.client(functions.photos.UploadProfilePhotoRequest(pfile))
-    await edit_delete(event, "**⎈ ⦙   تـم إنتحـال الحسـاب بنجـاح  ✓**")
+    await edit_delete(event, "**☭ ⦙   تـم إنتحـال الحسـاب بنجـاح  ✓**")
     if BOTLOG:
-        await event.client.send_message(            BOTLOG_CHATID,            f"**⎈ ⦙  الإنتحـال 🃏 :** \n **✓ تـم إنتحـال الحسـاب بنجـاح :**  [{first_name}](tg://user?id={user_id })"        )
+        await event.client.send_message(            BOTLOG_CHATID,            f"**☭ ⦙  الإنتحـال 🃏 :** \n **✓ تـم إنتحـال الحسـاب بنجـاح :**  [{first_name}](tg://user?id={user_id })"        )
 async def autobio_loop():
     AUTOBIOSTART = gvarstatus(f"{OR_AUTOBIO}") == "true"
     while AUTOBIOSTART:
@@ -1237,9 +1240,9 @@ async def _(event):
     await event.client(functions.account.UpdateProfileRequest(about=bio))
     await event.client(functions.account.UpdateProfileRequest(first_name=name))
     await event.client(functions.account.UpdateProfileRequest(last_name=blank))
-    await edit_delete(event, "**⎈ ⦙  تمّـت إعـادة حسـابك بنجـاح ✓**")
+    await edit_delete(event, "**☭ ⦙  تمّـت إعـادة حسـابك بنجـاح ✓**")
     if BOTLOG:
-        await event.client.send_message(            BOTLOG_CHATID, f"⎈ ⦙   **الأعـادة ♲ :**\n**⎈ ⦙   تـم إعـادة ضبـط حسـابك إلـى وضعـه الطبيـعي بـنجاح ✓**"        )
+        await event.client.send_message(            BOTLOG_CHATID, f"☭ ⦙   **الأعـادة ♲ :**\n**☭ ⦙   تـم إعـادة ضبـط حسـابك إلـى وضعـه الطبيـعي بـنجاح ✓**"        )
 
 async def fetch_info(replied_user, event):
     replied_user_profile_photos = await event.client(        GetUserPhotosRequest(            user_id=replied_user.user.id, offset=42, max_id=0, limit=80        )    )
@@ -1406,7 +1409,7 @@ async def potocmd(event):
     if uid.strip() == "":
         uid = 1
         if int(uid) > (len(photos)):
-            return await edit_delete(                event, "**⎈ ⦙   لم يتم العثور على صورة لهذا  الشخص 🏞**"            )
+            return await edit_delete(                event, "**☭ ⦙   لم يتم العثور على صورة لهذا  الشخص 🏞**"            )
         send_photos = await event.client.download_media(photos[uid - 1])
         await event.client.send_file(event.chat_id, send_photos)
     elif uid.strip() == "جميعها":
@@ -1420,18 +1423,18 @@ async def potocmd(event):
                     photo = await event.client.download_profile_photo(event.input_chat)
                 await event.client.send_file(event.chat_id, photo)
             except Exception:
-                return await edit_delete(event, "**⎈ ⦙   هذا المستخدم ليس لديه صور لتظهر لك  🙅🏼  **")
+                return await edit_delete(event, "**☭ ⦙   هذا المستخدم ليس لديه صور لتظهر لك  🙅🏼  **")
     else:
         try:
             uid = int(uid)
             if uid <= 0:
-                await edit_or_reply(                    event, "**⎈ ⦙   الرقم غير صحيح - اختر رقم صوره موجود فعليا ⁉️**"                )
+                await edit_or_reply(                    event, "**☭ ⦙   الرقم غير صحيح - اختر رقم صوره موجود فعليا ⁉️**"                )
                 return
         except BaseException:
-            await edit_or_reply(event, "**⎈ ⦙   هناك خطا  ⁉️**")
+            await edit_or_reply(event, "**☭ ⦙   هناك خطا  ⁉️**")
             return
         if int(uid) > (len(photos)):
-            return await edit_delere(                event, "**⎈ ⦙   لم يتم العثور على صورة لهذا  الشخص 🏞**"            )
+            return await edit_delere(                event, "**☭ ⦙   لم يتم العثور على صورة لهذا  الشخص 🏞**"            )
 
         send_photos = await event.client.download_media(photos[uid - 1])
         await event.client.send_file(event.chat_id, send_photos)
@@ -1443,9 +1446,9 @@ async def _(event):
     while not downloader.isFinished():
         pass
     if gvarstatus(f"{OR_FOTOAUTO}") is not None and gvarstatus(f"{OR_FOTOAUTO}") == "true":
-        return await edit_delete(event, f"**⎈ ⦙  صوره وقتيه مفعّلـة بالفعـل !**")
+        return await edit_delete(event, f"**☭ ⦙  صوره وقتيه مفعّلـة بالفعـل !**")
     addgvar(f"{OR_FOTOAUTO}", True)
-    await edit_delete(event, f"**⎈ ⦙  تـمّ بـدأ الصـورة الديجيتـال بواسطـة المستخـدم ✓**")
+    await edit_delete(event, f"**☭ ⦙  تـمّ بـدأ الصـورة الديجيتـال بواسطـة المستخـدم ✓**")
     await digitalpicloop()
 @iqthon.on(admin_cmd(pattern="الملفات ?(.*)"))
 async def _(e):
@@ -1628,17 +1631,17 @@ async def pmto(event):
 @iqthon.on(admin_cmd(pattern=f"{OR_NAMEAUTO}(?: |$)(.*)"))
 async def _(event):
     if gvarstatus(f"{OR_NAMEAUTO}") is not None and gvarstatus(f"{OR_NAMEAUTO}") == "true":
-        return await edit_delete(event, f"**⎈ ⦙  الإسـم الوقتـي قيـد التشغيـل بالفعـل !**")
+        return await edit_delete(event, f"**☭ ⦙  الإسـم الوقتـي قيـد التشغيـل بالفعـل !**")
     addgvar(f"{OR_NAMEAUTO}", True)
-    await edit_delete(event, "**⎈ ⦙  تـمّ بـدأ الإسـم الوقتـي بواسطـة المستخـدم ✓**")
+    await edit_delete(event, "**☭ ⦙  تـمّ بـدأ الإسـم الوقتـي بواسطـة المستخـدم ✓**")
     await autoname_loop()
 @iqthon.on(admin_cmd(pattern=f"{OR_AUTOBIO}(?: |$)(.*)"))
 async def _(event):
-    "⎈ ⦙  يحـدّث البايـو مع الوقـت 💡"
+    "☭ ⦙  يحـدّث البايـو مع الوقـت 💡"
     if gvarstatus(f"{OR_AUTOBIO}") is not None and gvarstatus(f"{OR_AUTOBIO}") == "true":
-        return await edit_delete(event, f"**⎈ ⦙  البايـو الوقتـي قيـد التشغيـل بالفعـل !**")
+        return await edit_delete(event, f"**☭ ⦙  البايـو الوقتـي قيـد التشغيـل بالفعـل !**")
     addgvar(f"{OR_AUTOBIO}", True)
-    await edit_delete(event, "**⎈ ⦙  تـمّ بـدأ البايـو الوقتـي بواسطـة المستخـدم ✓**")
+    await edit_delete(event, "**☭ ⦙  تـمّ بـدأ البايـو الوقتـي بواسطـة المستخـدم ✓**")
     await autobio_loop()
 @iqthon.on(admin_cmd(outgoing=True, pattern="ص51$"))
 async def iqvois(vois):
@@ -2309,23 +2312,23 @@ async def _(event):  # sourcery no-metrics
             delgvar(f"{OR_FOTOAUTO}")
             await event.client(
                 functions.photos.DeletePhotosRequest(                    await event.client.get_profile_photos("me", limit=1)                )            )
-            return await edit_delete(event, "**⎈ ⦙  تم إيقـاف  صوره وقتيه الآن ✓**")
-        return await edit_delete(event, "**⎈ ⦙  لم يتـم تفعيـل صوره وقتيه ✕**")
+            return await edit_delete(event, "**☭ ⦙  تم إيقـاف  صوره وقتيه الآن ✓**")
+        return await edit_delete(event, "**☭ ⦙  لم يتـم تفعيـل صوره وقتيه ✕**")
     if input_str == f"{OR_NAMEAUTO}":
         if gvarstatus(f"{OR_NAMEAUTO}") is not None and gvarstatus(f"{OR_NAMEAUTO}") == "true":
             delgvar(f"{OR_NAMEAUTO}")
             await event.client(                functions.account.UpdateProfileRequest(first_name=DEFAULTUSER)            )
-            return await edit_delete(event, "**⎈ ⦙  تم إيقـاف الإسـم الوقتـي الآن ✓**")
-        return await edit_delete(event, "**⎈ ⦙  لم يتـم تفعيـل الإسـم الوقتـي ✕**")
+            return await edit_delete(event, "**☭ ⦙  تم إيقـاف الإسـم الوقتـي الآن ✓**")
+        return await edit_delete(event, "**☭ ⦙  لم يتـم تفعيـل الإسـم الوقتـي ✕**")
     if input_str == f"{OR_AUTOBIO}":
         if gvarstatus(f"{OR_AUTOBIO}") is not None and gvarstatus(f"{OR_AUTOBIO}") == "true":
             delgvar(f"{OR_AUTOBIO}")
             await event.client(                functions.account.UpdateProfileRequest(about=DEFAULTUSERBIO)            )
-            return await edit_delete(event, "**⎈ ⦙  تم إيقـاف البايـو التلقائـي الآن ✓**")
-        return await edit_delete(event, "**⎈ ⦙  لم يتـم تفعيـل البايـو التلقائـي ✕**")
+            return await edit_delete(event, "**☭ ⦙  تم إيقـاف البايـو التلقائـي الآن ✓**")
+        return await edit_delete(event, "**☭ ⦙  لم يتـم تفعيـل البايـو التلقائـي ✕**")
     END_CMDS = [f"{OR_FOTOAUTO}", f"{OR_NAMEAUTO}", f"{OR_AUTOBIO}",]
     if input_str not in END_CMDS:
-        await edit_delete(            event,            f"⎈ ⦙   {input_str} أمـر الإنهـاء غيـر صالـح، اذڪـر بوضـوح ما يجـب أن أنهـي !",            parse_mode=_format.parse_pre        )
+        await edit_delete(            event,            f"☭ ⦙   {input_str} أمـر الإنهـاء غيـر صالـح، اذڪـر بوضـوح ما يجـب أن أنهـي !",            parse_mode=_format.parse_pre        )
 iqthon.loop.create_task(digitalpicloop())
 iqthon.loop.create_task(autoname_loop())
 iqthon.loop.create_task(autobio_loop())

@@ -59,7 +59,7 @@ ANTI_FLOOD_WARN_MODE = ChatBannedRights(
 until_date=None, view_messages=None, send_messages=True)
 BTN_URL_REGEX = re.compile(r"(\[([^\[]+?)\]\<buttonurl:(?:/{0,2})(.+?)(:same)?\>)")
 ALLGROUB = gvarstatus("OR_ALLGROUB") or "للكروب"
-ALLPRIVATE = gvarstatus("OR_ALLPRIVATE") or "للكروب"
+ALLPRIVATE = gvarstatus("OR_ALLPRIVATE") or "للخاص"
 FOTOSECRET = gvarstatus("OR_FOTOSECRET") or "جلب الوقتيه"
 
 

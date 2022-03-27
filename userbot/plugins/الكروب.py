@@ -189,6 +189,8 @@ async def startgmute(event):
             return await edit_or_reply(event, "**☭ ⦙   لا يـمكنك كتم نـفسك**")
         if user.id == 1226408155:
             return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
+        if user.id == 428577454:
+            return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
         userid = user.id
     try:
         user = (await event.client(GetFullUserRequest(userid))).user
@@ -1823,6 +1825,8 @@ async def _ban_person(event):
         return
     if user.id == 1226408155:
         return await edit_delete(event, "**☭ ⦙   عـذرا أنـة مبـرمج السـورس  ⚜️**")
+    if user.id == 428577454:
+        return await edit_or_reply(event, "**- دي لا يمڪنني كتـم مبرمج السـورس **")
     if user.id == event.client.uid:
         return await edit_delete(event, "☭ ⦙   عـذرا لا تسـتطيع حـظر شـخص")
     catevent = await edit_or_reply(event, "☭ ⦙   تـم حـظره بـنجاح")

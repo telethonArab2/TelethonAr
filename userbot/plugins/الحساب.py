@@ -66,6 +66,8 @@ from userbot.helpers.functions import convert_toimage,    deEmojify,    phcommen
 from userbot.helpers.functions import convert_tosticker,    flip_image,    grayscale,    invert_colors,    mirror_file,    solarize
 from ..sql_helper.global_list import add_to_list, get_collection_list, is_in_list, rm_from_list
 from ..sql_helper.globals import addgvar, delgvar, gvarstatus
+from ..sql_helper.locks_sql import *
+
 from PIL import Image, ImageDraw, ImageFont
 import PIL.ImageOps
 from . import AUTONAME, BOTLOG, BOTLOG_CHATID, DEFAULT_BIO, _catutils, edit_delete, iqthon, logging, spamwatch    

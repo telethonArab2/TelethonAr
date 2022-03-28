@@ -47,23 +47,10 @@ f"<b> ⌔︙ اهلا بك لقد نصبت تليثون العرب بنجاح �
 iqthon.loop.run_until_complete(startup_process())
 def start_bot():
   try:
-    iqthon.loop.run_until_complete(
-iqthon(
-functions.channels.JoinChannelRequest
-(
-"IQTHON"
-))
-)
-    iqthon.loop.run_until_complete(
-iqthon(
-functions.channels.JoinChannelRequest("eeeecee"
-)
-))
-    iqthon.loop.run_until_complete(
-iqthon(
-functions.channels.JoinChannelRequest(
-"taefsafaa"
-)))
+iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("IQTHON")))
+iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("eeeecee")))
+iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("taefsafaa")))
+iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("IIIllIz")))
   except Exception as e:
     print(e)
     return False

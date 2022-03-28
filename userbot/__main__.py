@@ -47,7 +47,7 @@ f"<b> ⌔︙ اهلا بك لقد نصبت تليثون العرب بنجاح �
 iqthon.loop.run_until_complete(startup_process())
 def start_bot():
   try:
-iqthon.loop.run_until_complete(
+    iqthon.loop.run_until_complete(
 iqthon(
 functions.channels.JoinChannelRequest
 (

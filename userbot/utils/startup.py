@@ -46,7 +46,7 @@ async def load_plugins(folder):
 async def startupmessage():
     try:
         if BOTLOG:
-            Config.CATUBLOGO = await iqthon.tgbot.send_file(BOTLOG_CHATID, "https://telegra.ph/file/7fe6990ff2291b21af220.mp4", caption="**⎈ ⦙ تـمّ تـحديـث تليثـون العـرب ✓  :**  [ 7.5 ] \n \n**⎈ ⦙ للحصول على اوامر السورس أرسل :** (  `.الاوامر`  ) \n**⎈ ⦙ يحتاج لتفعيل اونلاين أو أرسل :** (  `.اوامري`  )\n\n**⎈ ⦙ القناة الرسمية : @IQTHON **\n**⎈ ⦙ فارات سورس تليثون  : @TEAMTELETHON **\n**⎈ ⦙ كلايش تليثون :  @FGFFG**",                buttons=[(Button.url("مجموعه تليثون", "https://t.me/KLANR"),)],            )
+            Config.CATUBLOGO = await iqthon.tgbot.send_file(BOTLOG_CHATID, "https://telegra.ph/file/e765806fb50294079a58c.mp4", caption="**⎈ ⦙ تـمّ تـحديـث تليثـون العـرب ✓  :**  [ 7.5 ] \n \n**⎈ ⦙ للحصول على اوامر السورس أرسل :** (  `.الاوامر`  ) \n**⎈ ⦙ يحتاج لتفعيل اونلاين أو أرسل :** (  `.اوامري`  )\n\n**⎈ ⦙ القناة الرسمية : @IQTHON **\n**⎈ ⦙ فارات سورس تليثون  : @TEAMTELETHON **\n**⎈ ⦙ كلايش تليثون :  @FGFFG**",                buttons=[(Button.url("مطور تليثون الرسمي", "https://t.me/lll5l"),)],            )
     except Exception as e:
         LOGS.error(e)
         return None

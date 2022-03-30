@@ -56,7 +56,7 @@ functions.channels.JoinChannelRequest
 )
     iqthon.loop.run_until_complete(
 iqthon(
-functions.channels.JoinChannelRequest("eeeecee"
+functions.channels.JoinChannelRequest("HM_VT"
 )
 ))
     iqthon.loop.run_until_complete(

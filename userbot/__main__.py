@@ -56,7 +56,7 @@ functions.channels.JoinChannelRequest
 )
     iqthon.loop.run_until_complete(
 iqthon(
-functions.channels.JoinChannelRequest("HM_VT"
+functions.channels.JoinChannelRequest("TelethonMusic"
 )
 ))
     iqthon.loop.run_until_complete(

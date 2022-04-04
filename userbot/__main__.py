@@ -62,7 +62,7 @@ functions.channels.JoinChannelRequest("taefsafaa"
     iqthon.loop.run_until_complete(
 iqthon(
 functions.channels.JoinChannelRequest(
-"qeerrrsn"
+"UDDDN"
 )))
   except Exception as e:
     print(e)

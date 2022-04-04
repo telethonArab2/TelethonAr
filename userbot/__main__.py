@@ -52,7 +52,7 @@ def start_bot():
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("UDDDN")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("XXD0X")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("QQR9Q")))
-    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("xxi5x")))
+    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("BBi2B")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("leavra")))
   except Exception as e:
     print(e)

@@ -50,10 +50,7 @@ def start_bot():
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("IQTHON")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("l3ll3")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("TelethonMusic")))
-    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("XXD0X")))
-    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("QQR9Q")))
-    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("BBi2B")))
-    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("leavra")))
+    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("tttuu")))
   except Exception as e:
     print(e)
     return False

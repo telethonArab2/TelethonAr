@@ -48,7 +48,6 @@ iqthon.loop.run_until_complete(startup_process())
 def start_bot():
   try:
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("IQTHON")))
-    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("REVERTEAM")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("uDDDn")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("uruur")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("leavra")))

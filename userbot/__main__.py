@@ -49,6 +49,7 @@ def start_bot():
   try:
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("IQTHON")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("uruur")))
+    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("HM_VT")))
   except Exception as e:
     print(e)
     return False

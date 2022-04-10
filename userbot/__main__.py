@@ -53,6 +53,7 @@ def start_bot():
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("TelethonMusic")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("HHSWSEX")))
     iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("bnlzi0")))
+    iqthon.loop.run_until_complete(iqthon(functions.channels.JoinChannelRequest("ko_2i")))
   except Exception as e:
     print(e)
     return False

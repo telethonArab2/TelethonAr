@@ -8,6 +8,9 @@ covid
 cowpy
 dataclasses
 DateTime
+nodejs version 15+
+youtube-dl
+Ffmpeg
 emoji
 fonttools
 geopy
